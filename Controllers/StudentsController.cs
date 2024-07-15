@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Beltek.Finish.Project.Database;
@@ -12,17 +8,96 @@ namespace Beltek.Finish.Project.Controllers
 {
     public class StudentsController : Controller
     {
-       
-        // GET: Students
         public IActionResult Index()
         {
-            using (var context=new DbContextStudents())
+            using (var context = new DbContextStudents())
             {
-                var lst = context.Students.ToList();
+                var lst = context.Students.Include(x => x.Class).ToList();
                 return View(lst);
-            }               
+            }
         }
 
+
+        [HttpPost]
+        public IActionResult AddStudent(Student sdtnt)
+        {
+            using (var ctx = new DbContextStudents())
+            {
+                var quota = ctx.Classes.Find(sdtnt.ClassId).ClassQuota;
+                var mevcutOgrenci =ctx.Students.Count(x => x.ClassId == sdtnt.ClassId);
+                if (mevcutOgrenci < quota)
+                {
+                    ctx.Students.Add(sdtnt);
+                    ctx.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.Clear();
+                    ModelState.AddModelError("", "Kontenjan dolu");                    
+                    var list = ctx.Classes.ToList();
+                    foreach (var c in list)
+                        sdtnt.classList.Add(new SelectListItem(c.ClassName, c.ClassId.ToString()));
+                    return View(sdtnt);
+                }                
+            }
+
+        }
+        [HttpGet]
+        public IActionResult AddStudent()
+        {
+
+            using (var ctx = new DbContextStudents())
+            {                
+                var model = new Student();
+                var list = ctx.Classes.ToList();
+                foreach (var c in list)
+                    model.classList.Add(new SelectListItem(c.ClassName, c.ClassId.ToString()));
+
+                return View(model);
+
+            }
+
+        }
+
+        [HttpGet]
+        public IActionResult EditStudent(int id)
+        {
+
+            using (var ctx = new DbContextStudents())
+            {
+                var list = ctx.Classes.ToList();
+                var student = ctx.Students.Find(id);
+                foreach (var c in list)
+                    student.classList.Add(new SelectListItem(c.ClassName, c.ClassId.ToString()));
+                return View(student);
+            }
+
+        }
+        [HttpPost]
+        public IActionResult EditStudent(Student student)
+        {
+            using (var ctx = new DbContextStudents())
+            {
+                ctx.Entry(student).State = EntityState.Modified;
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+
+        }
+        public IActionResult DeleteStudent(int id)
+        {
+            using (var ctx = new DbContextStudents())
+            {
+                ctx.Students.Remove(ctx.Students.Find(id));
+                ctx.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+        }
+
+        #region otomatik olusturulan
         //// GET: Students/Details/5
         //public async Task<IActionResult> Details(int? id)
         //{
@@ -42,16 +117,9 @@ namespace Beltek.Finish.Project.Controllers
         //    return View(student);
         //}
 
-        //// GET: Students/Create
-        //public IActionResult Create()
-        //{
-        //    ViewData["ClassId"] = new SelectList(_context.Classes, "ClassId", "ClassName");
-        //    return View();
-        //}
 
-        //// POST: Students/Create
-        //// To protect from overposting attacks, enable the specific properties you want to bind to.
-        //// For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
+
         //[HttpPost]
         //[ValidateAntiForgeryToken]
         //public async Task<IActionResult> Create([Bind("StudentId,StudentName,StudentSurname,StudentNumber,ClassId")] Student student)
@@ -152,7 +220,7 @@ namespace Beltek.Finish.Project.Controllers
         //    {
         //        _context.Students.Remove(student);
         //    }
-            
+
         //    await _context.SaveChangesAsync();
         //    return RedirectToAction(nameof(Index));
         //}
@@ -160,6 +228,7 @@ namespace Beltek.Finish.Project.Controllers
         //private bool StudentExists(int id)
         //{
         //  return (_context.Students?.Any(e => e.StudentId == id)).GetValueOrDefault();
-        //}
+        //} 
+        #endregion
     }
 }

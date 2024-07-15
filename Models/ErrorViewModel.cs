@@ -1,3 +1,4 @@
+
 namespace Beltek.Finish.Project.Models
 {
     public class ErrorViewModel
@@ -5,5 +6,6 @@ namespace Beltek.Finish.Project.Models
         public string? RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+      
     }
 }

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Class>
+
+@{
+    ViewData["Title"] = "Sınıflar";
+    ViewData["Description"] = "Sınıf Listesi";
+}
+
+<h1>Sınıflarımız</h1>
+
+<p>
+    <a asp-action="AddClass" class="btn btn-success">Yeni Ekle</a>
+</p>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                SINIF ADI
+            </th>
+            <th>
+                KONTENJAN
+            </th>
+            <th>İŞLEMLER</th>
+        </tr>
+    </thead>
+    <tbody class="table table-hover">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ClassName
+                </td>
+                <td>
+                    @item.ClassQuota
+                </td>
+                <td>
+                    <a asp-action="EditClass" asp-route-id="@item.ClassId" class="btn btn-sm btn-outline-secondary text-black-50">Düzenle</a> |
+                    <a asp-action="DeleteClass" asp-route-id="@item.ClassId" class="btn btn-sm btn-danger text-black-50" onclick="return confirm('Emin misin?')">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

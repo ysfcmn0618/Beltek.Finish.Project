@@ -8,19 +8,19 @@
 <h1>Öğrenciler</h1>
 
 <p>
-    <a asp-action="Create">Yeni Ekle</a>
+    <a asp-action="AddStudent" class="btn btn-success">Yeni Ekle</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>Ad</th>
-            <th>Soyad</th>
-            <th>Numara</th>
-            <th>Sınıf</th>
-            <th></th>
+            <th>AD</th>
+            <th>SOYAD</th>
+            <th>NUMARA</th>
+            <th>SINIF</th>
+            <th>İŞLEMLER</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody class="table table-hover">
         @if (Model.Count() != 0)
         {
             @foreach (var item in Model)
@@ -39,9 +39,8 @@
                         @item.Class.ClassName
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.StudentId">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.StudentId">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.StudentId">Delete</a>
+                        <a asp-action="EditStudent" asp-route-id="@item.StudentId" class="btn btn-secondary text-black-50">Düzenle</a> |
+                        <a asp-action="DeleteStudent" asp-route-id="@item.StudentId" class="btn btn-danger text-black-50" onclick="return confirm('Emin misiniz?')">Sil</a>
                     </td>
                 </tr>
             }
@@ -51,7 +50,7 @@
         {
             <tr>
                 <td>Henüz Öğrenci Girişi Yapılmamış</td>
-                <td><a asp-action="Create">İlk Öğrencinizi Ekleyin</a></td>
+                <td><a asp-action="AddStudent">İlk Öğrencinizi Ekleyin</a></td>
             </tr>
         }
 

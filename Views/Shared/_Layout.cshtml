@@ -20,32 +20,12 @@
                 </button>
 
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @* <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Öğrenci İşlemleri
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Yeni Öğrenci Ekle</a></li>
-                                <li><a class="dropdown-item" href="#">Öğrencileri Düzenle </a></li>
-                                <li><a class="dropdown-item" href="#">Bütün Öğrenciler</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Sınıf İşlemleri
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">Yeni Sınıf Ekle</a></li>
-                                <li><a class="dropdown-item" href="#">Sınıfları Düzenle </a></li>
-                                <li><a class="dropdown-item" href="#">Tüm Sınıflar</a></li>
-                            </ul>
-                        </li> *@
+                    <ul class="navbar-nav flex-grow-1">                       
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Index">Öğrenci İşlemleri</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Sınıf İşlemleri</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Classes" asp-action="Index">Sınıf İşlemleri</a>
                         </li>
                     </ul>
                 </div>
@@ -60,7 +40,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Beltek.Finish.Project Tüm Hakları Saklıdeğildir. - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Beltek Bitirme Projecesi Tüm Hakları Saklı değildir. - <a asp-area="" asp-controller="Home" asp-action="Privacy">Güvenlik politikası</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

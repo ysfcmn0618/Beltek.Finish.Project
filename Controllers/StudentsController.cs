@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Beltek.Finish.Project.Database;
 using Beltek.Finish.Project.Models;
+using System.Collections.Generic;
 
 namespace Beltek.Finish.Project.Controllers
 {
@@ -15,19 +16,21 @@ namespace Beltek.Finish.Project.Controllers
                 var lst = context.Students.Include(x => x.Class).ToList();
                 return View(lst);
             }
+            //var lst = new Student().GetAll();
+            //return View(lst);
         }
 
 
         [HttpPost]
-        public IActionResult AddStudent(Student sdtnt)
+        public IActionResult AddStudent(Student stdnt)
         {
             using (var ctx = new DbContextStudents())
             {
-                var quota = ctx.Classes.Find(sdtnt.ClassId).ClassQuota;
-                var mevcutOgrenci =ctx.Students.Count(x => x.ClassId == sdtnt.ClassId);
+                var quota = ctx.Classes.Find(stdnt.ClassId).ClassQuota;
+                var mevcutOgrenci =ctx.Students.Count(x => x.ClassId == stdnt.ClassId);
                 if (mevcutOgrenci < quota)
                 {
-                    ctx.Students.Add(sdtnt);
+                    ctx.Students.Add(stdnt);
                     ctx.SaveChanges();
                     return RedirectToAction("Index");
                 }
@@ -37,8 +40,8 @@ namespace Beltek.Finish.Project.Controllers
                     ModelState.AddModelError("", "Kontenjan dolu");                    
                     var list = ctx.Classes.ToList();
                     foreach (var c in list)
-                        sdtnt.classList.Add(new SelectListItem(c.ClassName, c.ClassId.ToString()));
-                    return View(sdtnt);
+                        stdnt.classList.Add(new SelectListItem(c.ClassName, c.ClassId.ToString()));
+                    return View(stdnt);
                 }                
             }
 
